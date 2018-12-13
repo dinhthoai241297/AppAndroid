@@ -63,17 +63,31 @@ class Account extends Component {
                             style={styles.lItem}
                             underlayColor='#686c80'
                         >
-                            <Text>
-                                Đổi mật khẩu
-                            </Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text>
+                                    Đổi mật khẩu
+                                </Text>
+                                <Icon
+                                    type='font-awesome' name='angle-right'
+                                    color='#adadad'
+                                    size={18}
+                                />
+                            </View>
                         </Link>
                         <Link to='/update'
                             style={styles.lItem}
                             underlayColor='#686c80'
                         >
-                            <Text>
-                                Cập nhật thông tin
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text>
+                                    Cập nhật thông tin
                             </Text>
+                                <Icon
+                                    type='font-awesome' name='angle-right'
+                                    color='#adadad'
+                                    size={18}
+                                />
+                            </View>
                         </Link>
                     </View>
                 </View>
@@ -91,10 +105,10 @@ class Account extends Component {
 
 const styles = StyleSheet.create({
     lItem: {
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         paddingVertical: 10,
         borderBottomWidth: 0.6,
-        borderColor: '#595c6e'
+        borderColor: '#595959'
     }
 });
 

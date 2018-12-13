@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { NativeRouter, Route } from 'react-router-native';
+import { View, Dimensions } from 'react-native';
+import { NativeRouter, Route, BackButton } from 'react-router-native';
 import Main from './components/main/Main';
 import Login from './components/page/Login';
 import Register from './components/page/Register';
@@ -11,6 +11,10 @@ import UserApi from './api/UserApi';
 import { loginState } from './actions/UserActions';
 import UpdateInfo from './components/main/account/UpdateInfo';
 import UpdatePassword from './components/main/account/UpdatePassword';
+import AddProject from './components/main/project/AddProject';
+import ProjectDetail from './components/main/project/ProjectDetail';
+
+const { width, height } = Dimensions.get('window');
 
 class App extends Component {
 
@@ -38,6 +42,7 @@ class App extends Component {
                     } else if (res.code === 101) {
                         AsyncStorage.setItem('@token', null);
                         this.props.loginState({ token: null, user: null });
+                        this.setState({ loadding: false });
                     }
                 })
                 .catch(error => {
@@ -50,13 +55,17 @@ class App extends Component {
 
         return (
             <NativeRouter>
-                {this.state.loading ? <Loading /> : <View style={{ flex: 1 }}>
-                    <Route exact path="/" component={Main} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/update" component={UpdateInfo} />
-                    <Route path="/updatePassword" component={UpdatePassword} />
-                </View>}
+                <BackButton>
+                    {this.state.loading ? <Loading /> : <View style={{ flex: 1, zIndex: 1 }}>
+                        <Route exact path="/" component={Main} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/register" component={Register} />
+                        <Route path="/update" component={UpdateInfo} />
+                        <Route path="/updatePassword" component={UpdatePassword} />
+                        <Route path="/addProject" component={AddProject} />
+                        <Route path="/projectDetail/:id" component={ProjectDetail} />
+                    </View>}
+                </BackButton>
             </NativeRouter>
         );
     }

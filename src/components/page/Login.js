@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { loginApi } from '../../actions/UserActions';
-import md5 from 'md5';
+// import md5 from 'md5';
 import { Redirect } from 'react-router-native';
 
 class Login extends Component {
@@ -20,7 +20,8 @@ class Login extends Component {
         if (username === '' || password === '') {
             this.setState({ mes: 'Vui lòng không để trống trường nào!' });
         } else {
-            this.props.loginApi(username, md5(password)).then(res => {
+            // password = md5(passowrd) // product
+            this.props.loginApi(username, password).then(res => {
                 if (res.code !== 200) {
                     ToastAndroid.show(res.message, ToastAndroid.SHORT);
                 }
