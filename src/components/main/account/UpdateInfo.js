@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ToastAndroid, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { updateApi } from '../../../actions/UserActions';
 import { Redirect } from 'react-router-native';
@@ -48,12 +48,15 @@ class UpdateInfo extends Component {
         }
 
         return (
-            <View style={{ flex: 1, backgroundColor: '#595c6e' }}>
+            <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
                 <View
                     style={{
                         padding: 10,
-                        backgroundColor: '#686c80',
-                        alignItems: 'flex-start'
+                        backgroundColor: 'white',
+                        alignItems: 'flex-start',
+                        elevation: 4,
+                        shadowOpacity: 1,
+                        shadowColor: 'black'
                     }}
                 >
                     <TouchableOpacity
@@ -63,43 +66,45 @@ class UpdateInfo extends Component {
                             type='font-awesome'
                             name='arrow-left'
                             size={25}
-                            color='white'
+                            color='#adadad'
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#595c6e' }}>
-                    <View style={{ backgroundColor: '#686c80', marginHorizontal: 20, paddingHorizontal: 10, paddingVertical: 30 }}>
-                        <View style={{ marginBottom: 10, alignItems: 'center' }}>
-                            <Text style={{ fontSize: 20, color: 'white' }}>
-                                Cập nhật thông tin
+                <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#dce1e7' }}>
+                        <View style={{ backgroundColor: 'white', marginHorizontal: 20, paddingHorizontal: 10, paddingVertical: 30 }}>
+                            <View style={{ marginBottom: 10, alignItems: 'center' }}>
+                                <Text style={{ fontSize: 20, color: '#313131' }}>
+                                    Cập nhật thông tin
                         </Text>
-                        </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={{ color: 'red' }}>
-                                {this.state.mes}
-                            </Text>
-                        </View>
-                        <View style={{ marginBottom: 10 }}>
-                            <Text style={style.cusLabel}>
-                                Họ và Tên
+                            </View>
+                            <View style={{ alignItems: 'center' }}>
+                                <Text style={{ color: 'red' }}>
+                                    {this.state.mes}
+                                </Text>
+                            </View>
+                            <View style={{ marginBottom: 10 }}>
+                                <Text style={style.cusLabel}>
+                                    Họ và Tên
                         </Text>
-                            <TextInput
-                                style={style.cusInput}
-                                placeholder="Họ & Tên"
-                                onChangeText={fullName => this.setState({ fullName })}
-                                onTouchStart={() => this.setState({ mess: '' })}
-                            />
-                        </View>
-                        <View style={{ marginBottom: 10 }}>
-                            <Button
-                                onPress={this.update}
-                                title="Cập nhật"
-                                color="#61d775"
-                                accessibilityLabel="Learn more about this purple button"
-                            />
+                                <TextInput
+                                    style={style.cusInput}
+                                    placeholder="Họ & Tên"
+                                    onChangeText={fullName => this.setState({ fullName })}
+                                    onTouchStart={() => this.setState({ mess: '' })}
+                                />
+                            </View>
+                            <View style={{ marginBottom: 10 }}>
+                                <Button
+                                    onPress={this.update}
+                                    title="Cập nhật"
+                                    color="#61d775"
+                                    accessibilityLabel="Learn more about this purple button"
+                                />
+                            </View>
                         </View>
                     </View>
-                </View>
+                </ScrollView>
             </View >
         );
     }
@@ -108,12 +113,11 @@ class UpdateInfo extends Component {
 const style = StyleSheet.create({
     cusInput: {
         height: 40, paddingLeft: 0,
-        color: 'white', paddingBottom: 10,
-        borderBottomColor: '#595c6e', borderBottomWidth: 1
+        color: '#313131', paddingBottom: 10,
+        borderBottomColor: '#adadad', borderBottomWidth: 1
     },
     cusLabel: {
-        color: 'white', fontSize: 12,
-        fontFamily: 'roboto'
+        color: '#313131', fontSize: 12
     }
 });
 

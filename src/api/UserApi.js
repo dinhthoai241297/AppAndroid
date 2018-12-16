@@ -68,6 +68,17 @@ class UserApi {
             body: JSON.stringify({ data })
         });
     }
+
+    static search(data) {
+        return fetch(`${HOST}user/search`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data })
+        });
+    }
 }
 
 export default UserApi;

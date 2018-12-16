@@ -16,12 +16,19 @@ import ProjectDetail from './components/main/project/ProjectDetail';
 
 const { width, height } = Dimensions.get('window');
 
+// #dce1e7 main background - xám
+// #018fe5 header - selected - xanh dương
+// #8bccf3 unselect - xanh dương lạt
+// #f4f4f4 background input,select... - xám
+// #61d775 button - xanh lá
+// #7c7c7c màu label - xám đậm
+
 class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: true
         }
     }
 
@@ -33,25 +40,23 @@ class App extends Component {
         let token = await AsyncStorage.getItem('@token');
         if (token) {
             this.setState({ loading: true });
-            UserApi.loginToken({ token })
-                .then(response => response.json())
-                .then(res => {
-                    if (res.code === 200) {
-                        let { user } = res.data;
-                        this.props.loginState({ token, user });
-                    } else if (res.code === 101) {
-                        AsyncStorage.setItem('@token', null);
-                        this.props.loginState({ token: null, user: null });
-                        this.setState({ loadding: false });
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            let response = await UserApi.loginToken({ token });
+            let res = await response.json();
+            if (res && res.code === 200) {
+                let { user } = res.data;
+                this.props.loginState({ token, user });
+            } else {
+                AsyncStorage.setItem('@token', null);
+                this.setState({ loading: false });
+            }
+        } else {
+            this.setState({ loading: false });
         }
     }
 
     render() {
+
+        console.log(this.state.loading);
 
         return (
             <NativeRouter>

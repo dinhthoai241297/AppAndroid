@@ -8,6 +8,7 @@ import Notification from './notification/Notification';
 import { Icon } from 'react-native-elements';
 import { Redirect } from 'react-router-native';
 import { connect } from 'react-redux';
+import * as actions from '../../actions/TabAction';
 
 class Main extends Component {
 
@@ -18,11 +19,16 @@ class Main extends Component {
         }
     }
 
-    componentDidMount() {
-        let selectedTab = this.props.location.state && this.props.location.state.tab;
+    async componentDidMount() {
+        let selectedTab = this.props.mainTab;
         if (selectedTab) {
             this.setState({ selectedTab });
         }
+    }
+
+    changeTab = selectedTab => {
+        this.props.changeMainTab(selectedTab);
+        this.setState({ selectedTab });
     }
 
     render() {
@@ -38,41 +44,41 @@ class Main extends Component {
                         selected={this.state.selectedTab === 'project'}
                         title="Dự án"
                         renderIcon={() => <Icon name='work' color='#717171' />}
-                        renderSelectedIcon={() => <Icon name='work' color='#197bce' />}
+                        renderSelectedIcon={() => <Icon name='work' color='#018fe5' />}
                         badgeText=""
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
-                        onPress={() => this.setState({ selectedTab: 'project' })}>
+                        onPress={() => this.changeTab('project')}>
                         {<Project />}
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'task'}
                         title="Việc"
                         renderIcon={() => <Icon type='font-awesome' name='tasks' color='#717171' />}
-                        renderSelectedIcon={() => <Icon type='font-awesome' name='tasks' color='#197bce' />}
+                        renderSelectedIcon={() => <Icon type='font-awesome' name='tasks' color='#018fe5' />}
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
-                        onPress={() => this.setState({ selectedTab: 'task' })}>
+                        onPress={() => this.changeTab('task')}>
                         {<Task />}
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'notification'}
                         title="Thông báo"
                         renderIcon={() => <Icon name='notifications' color='#717171' />}
-                        renderSelectedIcon={() => <Icon name='notifications' color='#197bce' />}
+                        renderSelectedIcon={() => <Icon name='notifications' color='#018fe5' />}
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
-                        onPress={() => this.setState({ selectedTab: 'notification' })}>
+                        onPress={() => this.changeTab('notification')}>
                         {<Notification />}
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'account'}
                         title="Tôi"
                         renderIcon={() => <Icon type='font-awesome' name='user' color='#717171' />}
-                        renderSelectedIcon={() => <Icon type='font-awesome' name='user' color='#197bce' />}
+                        renderSelectedIcon={() => <Icon type='font-awesome' name='user' color='#018fe5' />}
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
-                        onPress={() => this.setState({ selectedTab: 'account' })}>
+                        onPress={() => this.changeTab('account')}>
                         {<Account />}
                     </TabNavigator.Item>
                 </TabNavigator>
@@ -86,14 +92,21 @@ const styles = StyleSheet.create({
         color: '#717171'
     },
     navItemSelected: {
-        color: '#197bce'
+        color: '#018fe5'
     }
 });
 
-const mapStateToProps = state => {
+const mapDispatchToProps = (dispatch, props) => {
     return {
-        user: state.UserReducer.user
+        changeMainTab: tab => dispatch(actions.changeMainTab(tab))
     }
 }
 
-export default connect(mapStateToProps)(Main);
+const mapStateToProps = state => {
+    return {
+        user: state.UserReducer.user,
+        mainTab: state.TabReducer.mainTab
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

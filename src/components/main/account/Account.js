@@ -17,7 +17,7 @@ class Account extends Component {
         let { user } = this.props;
         return (
             <ScrollView
-                style={{ backgroundColor: '#adadad' }}
+                style={{ backgroundColor: '#dce1e7' }}
             >
                 <View style={{
                     height: 200,
@@ -61,7 +61,7 @@ class Account extends Component {
                     <View>
                         <Link to='/updatePassword'
                             style={styles.lItem}
-                            underlayColor='#686c80'
+                            underlayColor='#f3f3f3'
                         >
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text>
@@ -76,7 +76,7 @@ class Account extends Component {
                         </Link>
                         <Link to='/update'
                             style={styles.lItem}
-                            underlayColor='#686c80'
+                            underlayColor='#f3f3f3'
                         >
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text>

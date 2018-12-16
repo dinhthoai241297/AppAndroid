@@ -71,12 +71,15 @@ class AddProject extends Component {
         }
 
         return (
-            <View style={{ flex: 1, backgroundColor: '#595c6e' }}>
+            <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
                 <View
                     style={{
                         padding: 10,
-                        backgroundColor: '#686c80',
-                        alignItems: 'flex-start'
+                        backgroundColor: 'white',
+                        alignItems: 'flex-start',
+                        elevation: 4,
+                        shadowOpacity: 1,
+                        shadowColor: 'black'
                     }}
                 >
                     <TouchableOpacity
@@ -86,67 +89,69 @@ class AddProject extends Component {
                             type='font-awesome'
                             name='arrow-left'
                             size={25}
-                            color='white'
+                            color='#adadad'
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#595c6e' }}>
-                    <View style={{ backgroundColor: '#686c80', marginHorizontal: 20, paddingHorizontal: 10, paddingVertical: 30 }}>
-                        <View style={{ marginBottom: 10, alignItems: 'center' }}>
-                            <Text style={{ fontSize: 20, color: 'white' }}>
-                                Thêm dự án
-                        </Text>
-                        </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={{ color: 'red' }}>
-                                {this.state.mes}
+                <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#dce1e7' }}>
+                        <View style={{ backgroundColor: 'white', marginHorizontal: 20, paddingHorizontal: 10, paddingVertical: 30 }}>
+                            <View style={{ marginBottom: 10, alignItems: 'center' }}>
+                                <Text style={{ fontSize: 20, color: '#313131' }}>
+                                    Thêm dự án
+                                </Text>
+                            </View>
+                            <View style={{ alignItems: 'center' }}>
+                                <Text style={{ color: 'red' }}>
+                                    {this.state.mes}
+                                </Text>
+                            </View>
+                            <View style={{ marginBottom: 10 }}>
+                                <Text style={style.cusLabel}>
+                                    Tên dự án
                             </Text>
-                        </View>
-                        <View style={{ marginBottom: 10 }}>
-                            <Text style={style.cusLabel}>
-                                Tên dự án
-                            </Text>
-                            <TextInput
-                                style={style.cusInput}
-                                placeholder="Tên dự án"
-                                onChangeText={name => this.setState({ name })}
-                            />
-                        </View>
-                        <View style={{ marginBottom: 10 }}>
-                            <Text style={style.cusLabel}>
-                                Dự kiến hoành thành
-                            </Text>
-                            <TouchableOpacity onPress={this.openDatePicker}>
                                 <TextInput
                                     style={style.cusInput}
-                                    editable={false}
-                                    placeholder="Hoàn thành"
-                                    value={this.state.endTime ? this.state.endTime.toDateString() : ''}
+                                    placeholder="Tên dự án"
+                                    onChangeText={name => this.setState({ name })}
                                 />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ marginBottom: 10 }}>
-                            <Text style={style.cusLabel}>
-                                Mô tả dự án
+                            </View>
+                            <View style={{ marginBottom: 10 }}>
+                                <Text style={style.cusLabel}>
+                                    Dự kiến hoành thành
                             </Text>
-                            <TextInput
-                                style={{ ...style.cusInput, height: 80, textAlignVertical: 'top' }}
-                                placeholder="Mô tả dự án"
-                                numberOfLines={3}
-                                multiline={true}
-                                onChangeText={description => this.setState({ description })}
-                            />
-                        </View>
-                        <View style={{ marginBottom: 10 }}>
-                            <Button
-                                onPress={this.addProject}
-                                title="Thêm dự án"
-                                color="#61d775"
-                                accessibilityLabel="Learn more about this purple button"
-                            />
+                                <TouchableOpacity onPress={this.openDatePicker}>
+                                    <TextInput
+                                        style={style.cusInput}
+                                        editable={false}
+                                        placeholder="Hoàn thành"
+                                        value={this.state.endTime ? this.state.endTime.toDateString() : ''}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ marginBottom: 10 }}>
+                                <Text style={style.cusLabel}>
+                                    Mô tả dự án
+                            </Text>
+                                <TextInput
+                                    style={{ ...style.cusInput, height: 80, textAlignVertical: 'top' }}
+                                    placeholder="Mô tả dự án"
+                                    numberOfLines={3}
+                                    multiline={true}
+                                    onChangeText={description => this.setState({ description })}
+                                />
+                            </View>
+                            <View style={{ marginBottom: 10 }}>
+                                <Button
+                                    onPress={this.addProject}
+                                    title="Thêm dự án"
+                                    color="#61d775"
+                                    accessibilityLabel="Learn more about this purple button"
+                                />
+                            </View>
                         </View>
                     </View>
-                </View>
+                </ScrollView>
             </View >
         );
     }
@@ -155,12 +160,11 @@ class AddProject extends Component {
 const style = StyleSheet.create({
     cusInput: {
         height: 40, paddingLeft: 0,
-        color: 'white', paddingBottom: 10,
-        borderBottomColor: '#595c6e', borderBottomWidth: 1
+        color: '#313131', paddingBottom: 10,
+        borderBottomColor: '#adadad', borderBottomWidth: 1
     },
     cusLabel: {
-        color: 'white', fontSize: 12,
-        fontFamily: 'roboto'
+        color: '#313131', fontSize: 12
     }
 });
 

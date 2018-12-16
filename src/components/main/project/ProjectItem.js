@@ -24,7 +24,7 @@ class ProjectItem extends Component {
 
         return (
             <View style={{
-                flex: 1, flexDirection: 'row', marginBottom: 1,
+                flex: 1, flexDirection: 'row', marginBottom: 2,
                 backgroundColor: 'white', padding: 10,
                 alignItems: 'center'
             }}>

@@ -13,6 +13,12 @@ const UserReducer = (state = intitState, action) => {
                 next: action.data.next
             }
         }
+        case actions.LOAD_MORE_LIST_PROJECT: {
+            return {
+                projects: state.projects.concat(action.data.list),
+                next: action.data.next
+            }
+        }
         default: {
             return { ...state };
         }
