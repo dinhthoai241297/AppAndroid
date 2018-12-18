@@ -14,17 +14,12 @@ class Main extends Component {
 
     constructor(props) {
         super(props);
+        let selectedTab = this.props.mainTab;
         this.state = {
-            selectedTab: 'project'
+            selectedTab: selectedTab || 'project'
         }
     }
 
-    async componentDidMount() {
-        let selectedTab = this.props.mainTab;
-        if (selectedTab) {
-            this.setState({ selectedTab });
-        }
-    }
 
     changeTab = selectedTab => {
         this.props.changeMainTab(selectedTab);

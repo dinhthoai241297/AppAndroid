@@ -1,49 +1,60 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Button, Modal, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
-import AddUser from './AddUser';
+import ProjectTask from './ProjectTask';
+import { Link } from 'react-router-native';
+import TabNavigator from 'react-native-tab-navigator';
+import ProjectDes from './ProjectDes';
+import ProjectApi from '../../../api/ProjectApi';
 
 class ProjectDetail extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false
+            selectedTab: 'description',
+            project: undefined,
+            members: []
         }
     }
 
-
-    backProject = () => {
-        this.props.history.push('/');
+    componentDidMount() {
+        this.loadProject();
     }
 
-    addMember = () => {
+    loadProject = async () => {
+        let { id } = this.props.match.params;
+        if (id) {
+            let rs = await ProjectApi.getOne({ id });
+            let res = await rs.json();
+            if (res) {
+                let { project } = res.data;
+                let owner = { ...project.owner };
+                owner.status = 0;
+                let members = [owner, ...project.members];
+                this.setState({ project, members });
+            }
+        }
+    }
 
+    changeTab = selectedTab => {
+        // this.props.changeMainTab(selectedTab);
+        this.setState({ selectedTab });
     }
 
     render() {
-        // let id = this.props.params.id;
-        console.log(this.props.match.params.id);
+        let { members, project } = this.state;
+        let { id } = this.props.user;
+        let tmp = members.find(mem => mem.id === id);
+        let member = false, owner = false;
+        owner = project && project.owner.id == id;
+        if (tmp && tmp.status !== 3 && tmp.status !== 4) {
+            member = true;
+        }
 
         return (
-            <View
-                style={{
-                    flex: 1,
-                    backgroundColor: '#dce1e7'
-                }}
-            >
-                {/* Modal */}
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={this.state.modalVisible} onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}
-                >
-                    <AddUser toggleModal={() => this.setState({ modalVisible: !this.state.modalVisible })} />
-                </Modal>
-                {/* /Modal */}
-
+            <View style={{ flex: 1 }}>
                 <View
                     style={{
                         padding: 10,
@@ -52,21 +63,17 @@ class ProjectDetail extends Component {
                         elevation: 4,
                         shadowOpacity: 1,
                         shadowColor: 'black',
-                        // shadowRadius: 10,
-                        // shadowOffset: { width: 10, height: 10 }
                     }}
                 >
                     <View style={{ flex: 1, alignItems: 'flex-start' }}>
-                        <TouchableOpacity
-                            onPress={this.backProject}
-                        >
+                        <Link to='/' component={TouchableOpacity}>
                             <Icon
                                 type='font-awesome'
                                 name='arrow-left'
                                 size={25}
                                 color='#adadad'
                             />
-                        </TouchableOpacity>
+                        </Link>
                     </View>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ fontSize: 20, color: '#adadad' }}>
@@ -75,103 +82,63 @@ class ProjectDetail extends Component {
                     </View>
                     <View style={{ flex: 1 }}></View>
                 </View>
-                <ScrollView style={{ backgroundColor: '#dce1e7' }}>
-                    <View style={{
-                        backgroundColor: 'white', padding: 40,
-                        justifyContent: 'center', alignItems: 'center',
-                        marginTop: 5
-                    }}>
-                        <Icon name='work' color='#018fe5' size={60} />
-                        <Text style={{ fontSize: 18 }}>
-                            Dự án mới
-                        </Text>
-                        <Text style={{ fontSize: 14, color: '#adadad' }}>
-                            16/12/2018
-                        </Text>
-                        <Text style={{ fontSize: 16 }}>
-                            Phạm Đình Thoại
-                        </Text>
-                    </View>
-                    {/* Description */}
-                    <View>
-                        {/* label */}
-                        <View style={{ padding: 10 }}>
-                            <Text style={{ color: '#7c7c7c' }}>
-                                Giới thiệu dự án
-                            </Text>
-                        </View>
-                        <View style={{ padding: 10, backgroundColor: 'white' }}>
-                            <Text>
-                                this is a test project, this project using sailsjs for api,
-                                mongodb for store data, and react native for code android
-                            </Text>
-                        </View>
-                    </View>
-                    {/* member */}
-                    <View>
-                        {/* label */}
-                        <View style={{ padding: 10 }}>
-                            <Text style={{ color: '#7c7c7c' }}>
-                                Thành viên
-                            </Text>
-                        </View>
-                        {/* list member */}
-                        <View style={{ marginBottom: 5 }}>
-                            {/* member item */}
-                            <View style={{
-                                flexDirection: 'row', marginBottom: 1, backgroundColor: 'white',
-                                borderLeftColor: '#018fe5', borderLeftWidth: 5
-                            }}>
-                                <View style={{ padding: 10, justifyContent: 'space-between', flex: 1 }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Icon
-                                            type='font-awesome' name='user'
-                                            color='#313131' size={14}
-                                        />
-                                        <Text style={{ color: '#313131', marginLeft: 10 }}>
-                                            Phạm Đình Thoại
-                                        </Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Icon
-                                            type='font-awesome'
-                                            name='clock-o'
-                                            color='#313131' size={14}
-                                        />
-                                        <Text style={{ color: '#313131', marginLeft: 10 }}>
-                                            12/12/2018
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View
-                                    style={{
-                                        backgroundColor: '61d775', justifyContent: 'center',
-                                        alignItems: 'center',
-                                        padding: 10, backgroundColor: '#61d775'
-                                    }}
-                                >
-                                    <Text style={{ color: 'white' }}>
-                                        Hoạt động
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                        {/* add member */}
-                        <View style={{
-                            paddingHorizontal: 40, paddingVertical: 10, backgroundColor: 'white'
-                        }}>
-                            <Button
-                                onPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
-                                title="Thêm thành viên"
-                                color="#018fe5"
-                                accessibilityLabel="Learn more about this purple button"
-                            />
-                        </View>
-                    </View>
-                </ScrollView>
+
+                {/* tab */}
+                <TabNavigator>
+                    <TabNavigator.Item
+                        selected={this.state.selectedTab === 'description'}
+                        title="Thông tin"
+                        renderIcon={() => <Icon name='work' color='#717171' />}
+                        renderSelectedIcon={() => <Icon name='work' color='#018fe5' />}
+                        badgeText=""
+                        titleStyle={styles.navItem}
+                        selectedTitleStyle={styles.navItemSelected}
+                        onPress={() => this.changeTab('description')}>
+                        {<ProjectDes loadProject={this.loadProject} members={this.state.members} project={this.state.project} />}
+                    </TabNavigator.Item>
+                    {member && <TabNavigator.Item
+                        selected={this.state.selectedTab === 'task'}
+                        title="Việc"
+                        renderIcon={() => <Icon type='font-awesome' name='tasks' color='#717171' />}
+                        renderSelectedIcon={() => <Icon type='font-awesome' name='tasks' color='#018fe5' />}
+                        titleStyle={styles.navItem}
+                        selectedTitleStyle={styles.navItemSelected}
+                        onPress={() => this.changeTab('task')}>
+                        {<ProjectTask user={this.props.user}
+                            members={this.state.members}
+                            project={this.state.project}
+                        />}
+                    </TabNavigator.Item>}
+                    {owner && <TabNavigator.Item
+                        selected={this.state.selectedTab === 'setting'}
+                        title="Quản lý"
+                        renderIcon={() => <Icon name='notifications' color='#717171' />}
+                        renderSelectedIcon={() => <Icon name='notifications' color='#018fe5' />}
+                        titleStyle={styles.navItem}
+                        selectedTitleStyle={styles.navItemSelected}
+                        onPress={() => this.changeTab('setting')}>
+                        {<ProjectTask />}
+                    </TabNavigator.Item>}
+                </TabNavigator>
             </View>
         );
     }
 }
 
-export default ProjectDetail;
+const styles = StyleSheet.create({
+    navItem: {
+        color: '#717171'
+    },
+    navItemSelected: {
+        color: '#018fe5'
+    }
+});
+
+const mapStateToProps = state => {
+    return {
+        user: state.UserReducer.user
+    }
+}
+
+
+export default connect(mapStateToProps)(ProjectDetail);

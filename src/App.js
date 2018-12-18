@@ -9,6 +9,7 @@ import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import UserApi from './api/UserApi';
 import { loginState } from './actions/UserActions';
+import Invite from './components/main/account/Invite';
 import UpdateInfo from './components/main/account/UpdateInfo';
 import UpdatePassword from './components/main/account/UpdatePassword';
 import AddProject from './components/main/project/AddProject';
@@ -22,6 +23,7 @@ const { width, height } = Dimensions.get('window');
 // #f4f4f4 background input,select... - xám
 // #61d775 button - xanh lá
 // #7c7c7c màu label - xám đậm
+// #ff5722 cam
 
 class App extends Component {
 
@@ -56,8 +58,6 @@ class App extends Component {
 
     render() {
 
-        console.log(this.state.loading);
-
         return (
             <NativeRouter>
                 <BackButton>
@@ -69,6 +69,7 @@ class App extends Component {
                         <Route path="/updatePassword" component={UpdatePassword} />
                         <Route path="/addProject" component={AddProject} />
                         <Route path="/projectDetail/:id" component={ProjectDetail} />
+                        <Route path="/invite" component={Invite} />
                     </View>}
                 </BackButton>
             </NativeRouter>

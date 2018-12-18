@@ -55,43 +55,66 @@ class Account extends Component {
                         </View>
                     </ImageBackground>
                 </View>
-                <View
-                    style={{ backgroundColor: 'white', marginBottom: 10 }}
-                >
-                    <View>
-                        <Link to='/updatePassword'
-                            style={styles.lItem}
-                            underlayColor='#f3f3f3'
-                        >
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <Text>
-                                    Đổi mật khẩu
-                                </Text>
-                                <Icon
-                                    type='font-awesome' name='angle-right'
-                                    color='#adadad'
-                                    size={18}
-                                />
-                            </View>
-                        </Link>
-                        <Link to='/update'
-                            style={styles.lItem}
-                            underlayColor='#f3f3f3'
-                        >
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <Text>
-                                    Cập nhật thông tin
-                            </Text>
-                                <Icon
-                                    type='font-awesome' name='angle-right'
-                                    color='#adadad'
-                                    size={18}
-                                />
-                            </View>
-                        </Link>
+                <View>
+                    <View style={{ padding: 10 }}>
+                        <Text style={{ color: '#7c7c7c' }}>
+                            Thông tin
+                        </Text>
                     </View>
+                    <Link to='/updatePassword'
+                        style={styles.lItem}
+                        underlayColor='#f3f3f3'
+                    >
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>
+                                Đổi mật khẩu
+                                </Text>
+                            <Icon
+                                type='font-awesome' name='angle-right'
+                                color='#adadad'
+                                size={18}
+                            />
+                        </View>
+                    </Link>
+                    <Link to='/update'
+                        style={styles.lItem}
+                        underlayColor='#f3f3f3'
+                    >
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>
+                                Cập nhật thông tin
+                            </Text>
+                            <Icon
+                                type='font-awesome' name='angle-right'
+                                color='#adadad'
+                                size={18}
+                            />
+                        </View>
+                    </Link>
                 </View>
                 <View>
+                    <View style={{ padding: 10 }}>
+                        <Text style={{ color: '#7c7c7c' }}>
+                            Lời mời
+                        </Text>
+                    </View>
+                    <Link to='/invite'
+                        style={styles.lItem}
+                        underlayColor='#f3f3f3'
+                    >
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>
+                                Dự án
+                            </Text>
+                            <Icon
+                                type='font-awesome' name='angle-right'
+                                color='#adadad'
+                                size={18}
+                            />
+                        </View>
+                    </Link>
+                </View>
+                <View style={{ padding: 20 }}>
                     <Button
                         title='Đăng xuất' onPress={() => this.props.logoutApi(this.props.token)}
                         backgroundColor='#197bce'
@@ -107,8 +130,8 @@ const styles = StyleSheet.create({
     lItem: {
         paddingHorizontal: 10,
         paddingVertical: 10,
-        borderBottomWidth: 0.6,
-        borderColor: '#595959'
+        backgroundColor: 'white',
+        marginBottom: 1
     }
 });
 

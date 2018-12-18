@@ -69,8 +69,8 @@ class UserApi {
         });
     }
 
-    static search(data) {
-        return fetch(`${HOST}user/search`, {
+    static getList(data) {
+        return fetch(`${HOST}user/getlist`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

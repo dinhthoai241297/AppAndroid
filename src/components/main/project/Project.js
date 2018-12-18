@@ -16,15 +16,24 @@ class Project extends Component {
             key: '',
             page: 1,
             refreshing: false,
-            loadMore: false
+            loadMore: false,
+            projects: []
         }
     }
 
     componentWillReceiveProps(nextProps) {
+        if (nextProps.data.projects !== this.props.data.projects) {
+            this.setState({ projects: nextProps.data.projects });
+        }
     }
 
+
     componentDidMount() {
-        this.loadListProject();
+        if (this.props.data.projects.length === 0) {
+            this.loadListProject();
+        } else {
+            this.setState({ projects: this.props.data.projects });
+        }
     }
 
     goAddProject = () => {
@@ -50,16 +59,19 @@ class Project extends Component {
     }
 
     handleChangeStatus = status => {
-        this.setState({
-            page: 1, status
-        }, this.loadListProject);
+        this.setState({ status }, this.loadListProject);
+    }
+
+    handleChangeProjectFilter = project => {
+        this.setState({ project }, this.loadListProject);
     }
 
     render() {
+
         return (
             <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
                 <FlatList
-                    data={this.props.data.projects}
+                    data={this.state.projects}
                     renderItem={({ item }) => <ProjectItem project={item} />}
                     keyExtractor={(item, index) => index.toString()}
                     onEndReached={this.loadMoreListApi}
@@ -68,12 +80,6 @@ class Project extends Component {
                     refreshing={this.state.refreshing}
                     ListFooterComponent={
                         this.state.loadMore && <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
-                            {/* <Button
-                            title='Tải thêm'
-                            onPress={this.loadMoreListApi}
-                            backgroundColor='#018fe5'
-                            color='white'
-                        /> */}
                             <ProgressBarAndroid />
                         </View>
                     }
@@ -82,18 +88,6 @@ class Project extends Component {
                             style={{ flex: 1, backgroundColor: 'white', marginBottom: 10 }}
                         >
                             <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>
-                                {/* <SearchBar
-                                    containerStyle={{
-                                        backgroundColor: 'white', borderBottomWidth: 0,
-                                        borderTopWidth: 0, flex: 1,
-                                        padding: 0, margin: 0
-                                    }}
-                                    inputStyle={{
-                                        backgroundColor: '#f4f4f4', color: '#313131',
-                                        margin: 8, height: 40
-                                    }}
-                                    icon={{ type: 'font-awesome', name: 'search' }}
-                                    placeholder='Tìm kiếm' /> */}
                                 <View style={{ flex: 1, padding: 10 }}>
                                     <TextInput
                                         style={{
@@ -127,7 +121,7 @@ class Project extends Component {
                                         mode='dropdown'
                                         selectedValue={this.state.project}
                                         style={{ height: 40, flex: 1, backgroundColor: '#f4f4f4', borderRadius: 50 }}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ project: itemValue })}>
+                                        onValueChange={(itemValue, itemIndex) => this.handleChangeProjectFilter(itemValue)}>
                                         <Picker.Item label="Tất cả" value="all" />
                                         <Picker.Item label="Tham gia" value="join" />
                                         <Picker.Item label="Sở hữu" value="owner" />

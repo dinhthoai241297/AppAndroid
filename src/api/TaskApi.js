@@ -1,9 +1,9 @@
 import { HOST } from '../contants/index';
 
-class ProjectApi {
+class TaskApi {
 
-    static addProject(data) {
-        return fetch(`${HOST}project/add`, {
+    static addTask(data) {
+        return fetch(`${HOST}task/add`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -14,18 +14,7 @@ class ProjectApi {
     }
 
     static getList(data) {
-        return fetch(`${HOST}project/getlist`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data })
-        });
-    }
-
-    static getOne(data) {
-        return fetch(`${HOST}project/getone`, {
+        return fetch(`${HOST}task/getlist`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -36,4 +25,4 @@ class ProjectApi {
     }
 }
 
-export default ProjectApi;
+export default TaskApi;

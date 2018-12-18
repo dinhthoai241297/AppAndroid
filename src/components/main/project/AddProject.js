@@ -34,7 +34,6 @@ class AddProject extends Component {
             token: this.props.token
         }).then(response => response.json())
             .then(res => {
-                console.log(res);
                 if (res.code === 200) {
                     ToastAndroid.show('Tạo project thành công!', ToastAndroid.SHORT);
                 } else {
