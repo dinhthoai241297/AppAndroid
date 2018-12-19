@@ -7,6 +7,7 @@ import { Link } from 'react-router-native';
 import TabNavigator from 'react-native-tab-navigator';
 import ProjectDes from './ProjectDes';
 import ProjectApi from '../../../api/ProjectApi';
+import ProjectManage from './ProjectManage';
 
 class ProjectDetail extends Component {
 
@@ -117,7 +118,7 @@ class ProjectDetail extends Component {
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
                         onPress={() => this.changeTab('setting')}>
-                        {<ProjectTask />}
+                        {<ProjectManage project={this.state.project} />}
                     </TabNavigator.Item>}
                 </TabNavigator>
             </View>

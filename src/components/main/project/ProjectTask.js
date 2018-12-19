@@ -4,6 +4,8 @@ import Loading from '../../page/Loading';
 import TaskApi from '../../../api/TaskApi';
 import AddTask from './AddTask';
 import { Icon } from 'react-native-elements';
+import { formatDate } from '../../../custom/Func';
+import TaskItem from '../task/TaskItem';
 
 class ProjectTask extends Component {
 
@@ -29,7 +31,8 @@ class ProjectTask extends Component {
     getList = async () => {
         this.setState({ refreshing: true });
         let { project } = this.props;
-        let rs = await TaskApi.getList({ project: project.id, page: 1 });
+        let { key } = this.state;
+        let rs = await TaskApi.getList({ project: project.id, page: 1, key });
         let res = await rs.json();
         if (res) {
             let { list } = res.data;
@@ -41,10 +44,10 @@ class ProjectTask extends Component {
     getListMore = async () => {
         this.setState({ loadMore: true });
         let { project } = this.props;
-        let { next, page } = this.state;
+        let { next, page, key } = this.state;
         if (next) {
             page++;
-            let rs = await TaskApi.getList({ project: project.id, page });
+            let rs = await TaskApi.getList({ project: project.id, page, key });
             let res = await rs.json();
             if (res) {
                 let { list } = res.data;
@@ -58,13 +61,19 @@ class ProjectTask extends Component {
         return TaskApi.addTask({ task });
     }
 
+    report = async (id, report) => {
+        let rs = await TaskApi.report({ report, id });
+        let res = await rs.json();
+        return res;
+    }
+
     render() {
 
         let { members, project, user } = this.props;
         let { modalVisible } = this.state;
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
 
                 {project ? <View>
                     {/* Modal */}
@@ -82,11 +91,7 @@ class ProjectTask extends Component {
 
                     <FlatList
                         data={this.state.tasks}
-                        renderItem={({ item }) => <View style={{ padding: 10, backgroundColor: 'white', marginBottom: 1 }}>
-                            <Text>
-                                {item.name}
-                            </Text>
-                        </View>}
+                        renderItem={({ item }) => <TaskItem report={this.report} user={user} task={item} />}
                         onEndReached={this.getListMore}
                         keyExtractor={(item, index) => index.toString()}
                         onEndReachedThreshold={0.1}
@@ -112,7 +117,7 @@ class ProjectTask extends Component {
                                             }}
                                             placeholder="Tìm kiếm"
                                             onChangeText={key => this.setState({ key })}
-                                            onSubmitEditing={this.loadListTask}
+                                            onSubmitEditing={this.getList}
                                         />
                                     </View>
                                     {user.id === project.owner.id && <View

@@ -176,7 +176,7 @@ class AddTask extends Component {
                             <View style={{ marginBottom: 10 }}>
                                 <Button
                                     onPress={this.addTask}
-                                    title="Thêm dự án"
+                                    title="Thêm công việc"
                                     color="#61d775"
                                     accessibilityLabel="Learn more about this purple button"
                                 />
