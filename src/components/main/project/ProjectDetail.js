@@ -118,7 +118,7 @@ class ProjectDetail extends Component {
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
                         onPress={() => this.changeTab('setting')}>
-                        {<ProjectManage project={this.state.project} />}
+                        {<ProjectManage loadProject={this.loadProject} project={this.state.project} />}
                     </TabNavigator.Item>}
                 </TabNavigator>
             </View>

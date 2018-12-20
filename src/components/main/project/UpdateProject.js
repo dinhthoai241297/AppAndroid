@@ -1,48 +1,24 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ToastAndroid, DatePickerAndroid, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Button, DatePickerAndroid, ToastAndroid } from 'react-native';
+import { formatDate } from '../../../custom/Func';
 import { Icon } from 'react-native-elements';
 import ProjectApi from '../../../api/ProjectApi';
 
-class AddProject extends Component {
+class UpdateProject extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            endTime: undefined,
             name: '',
-            description: ''
+            description: '',
+            endTime: undefined
         }
     }
 
-    backProject = () => {
-        this.props.history.push({
-            pathname: '/',
-            state: {
-                tab: 'project'
-            }
-        });
-    }
-
-    addProject = () => {
-        let { name, endTime, description } = this.state;
-        ProjectApi.addProject({
-            project: {
-                name, endTime, description
-            },
-            token: this.props.token
-        }).then(response => response.json())
-            .then(res => {
-                if (res.code === 200) {
-                    ToastAndroid.show('Tạo project thành công!', ToastAndroid.SHORT);
-                } else {
-                    ToastAndroid.show('Có lỗi xảy ra vui lòng thử lại!', ToastAndroid.SHORT);
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    componentDidMount() {
+        let { name, description, endTime } = this.props.project;
+        endTime = new Date(endTime);
+        this.setState({ name, description, endTime });
     }
 
     openDatePicker = async () => {
@@ -51,7 +27,7 @@ class AddProject extends Component {
             const { action, year, month, day } = await DatePickerAndroid.open({
                 // Use `new Date()` for current date.
                 // May 25 2020. Month 0 is January.
-                date: endTime
+                date: endTime || new Date()
             });
             if (action !== DatePickerAndroid.dismissedAction) {
                 this.setState({ endTime: new Date(year, month, day) });
@@ -62,12 +38,21 @@ class AddProject extends Component {
         }
     }
 
+    update = async () => {
+        let { name, description, endTime } = this.state;
+        let { id } = this.props.project;
+        let rs = await ProjectApi.update({ id, name, description, endTime });
+        let res = await rs.json();
+        if (res && res.code === 200) {
+            ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT);
+        } else {
+            ToastAndroid.show('Cập nhật thất bại vui lòng thử lại sau!', ToastAndroid.SHORT);
+        }
+    }
+
     render() {
 
-        let { user } = this.props;
-        if (!user) {
-            return <Redirect to='/login' />
-        }
+        let { name, description, endTime } = this.state;
 
         return (
             <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
@@ -82,7 +67,7 @@ class AddProject extends Component {
                     }}
                 >
                     <TouchableOpacity
-                        onPress={this.backProject}
+                        onPress={this.props.closeModal}
                     >
                         <Icon
                             type='font-awesome'
@@ -97,8 +82,8 @@ class AddProject extends Component {
                         <View style={{ backgroundColor: 'white', marginHorizontal: 20, paddingHorizontal: 10, paddingVertical: 30 }}>
                             <View style={{ marginBottom: 10, alignItems: 'center' }}>
                                 <Text style={{ fontSize: 20, color: '#313131' }}>
-                                    Thêm dự án
-                                </Text>
+                                    Cập nhật dự án
+                        </Text>
                             </View>
                             <View style={{ alignItems: 'center' }}>
                                 <Text style={{ color: 'red' }}>
@@ -108,11 +93,13 @@ class AddProject extends Component {
                             <View style={{ marginBottom: 10 }}>
                                 <Text style={style.cusLabel}>
                                     Tên dự án
-                            </Text>
+                                </Text>
                                 <TextInput
                                     style={style.cusInput}
                                     placeholder="Tên dự án"
                                     onChangeText={name => this.setState({ name })}
+                                    onTouchStart={() => this.setState({ mess: '' })}
+                                    value={name}
                                 />
                             </View>
                             <View style={{ marginBottom: 10 }}>
@@ -124,26 +111,27 @@ class AddProject extends Component {
                                         style={style.cusInput}
                                         editable={false}
                                         placeholder="Hoàn thành"
-                                        value={this.state.endTime ? this.state.endTime.toDateString() : ''}
+                                        value={endTime ? formatDate(endTime) : ''}
                                     />
                                 </TouchableOpacity>
                             </View>
                             <View style={{ marginBottom: 10 }}>
                                 <Text style={style.cusLabel}>
                                     Mô tả dự án
-                            </Text>
+                                </Text>
                                 <TextInput
                                     style={{ ...style.cusInput, height: 80, textAlignVertical: 'top' }}
                                     placeholder="Mô tả dự án"
                                     numberOfLines={3}
                                     multiline={true}
                                     onChangeText={description => this.setState({ description })}
+                                    value={description}
                                 />
                             </View>
                             <View style={{ marginBottom: 10 }}>
                                 <Button
-                                    onPress={this.addProject}
-                                    title="Thêm dự án"
+                                    onPress={this.update}
+                                    title="Cập nhật"
                                     color="#61d775"
                                     accessibilityLabel="Learn more about this purple button"
                                 />
@@ -167,16 +155,4 @@ const style = StyleSheet.create({
     }
 });
 
-const mapStateToProp = state => {
-    return {
-        user: state.UserReducer.user,
-        token: state.UserReducer.token
-    }
-}
-
-const mapDispatchToProp = (dispatch, props) => {
-    return {
-    }
-}
-
-export default connect(mapStateToProp, mapDispatchToProp)(AddProject);
+export default UpdateProject;

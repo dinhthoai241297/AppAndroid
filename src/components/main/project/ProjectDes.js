@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Button, Modal, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Button, Modal, Alert, RefreshControl } from 'react-native';
 import { Icon } from 'react-native-elements';
 import AddUser from './AddUser';
 import Loading from '../../page/Loading';
@@ -13,7 +13,8 @@ class ProjectDes extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            refreshing: false
         }
     }
 
@@ -28,6 +29,12 @@ class ProjectDes extends Component {
 
     closeModal = () => {
         this.setState({ modalVisible: false }, this.props.loadProject);
+    }
+
+    loadProject = async () => {
+        this.setState({ refreshing: true });
+        await this.props.loadProject();
+        this.setState({ refreshing: false });
     }
 
     render() {
@@ -54,7 +61,15 @@ class ProjectDes extends Component {
                 {/* /Modal */}
 
                 {/* require project */}
-                {project ? <ScrollView style={{ backgroundColor: '#dce1e7' }}>
+                {project ? <ScrollView
+                    style={{ backgroundColor: '#dce1e7' }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.loadProject}
+                        />
+                    }
+                >
                     <View style={{
                         backgroundColor: 'white', padding: 40,
                         justifyContent: 'center', alignItems: 'center',

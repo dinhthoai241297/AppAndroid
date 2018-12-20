@@ -34,6 +34,17 @@ class ProjectApi {
             body: JSON.stringify({ data })
         });
     }
+
+    static update(data) {
+        return fetch(`${HOST}project/update`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data })
+        });
+    }
 }
 
 export default ProjectApi;
