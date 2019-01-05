@@ -18,19 +18,23 @@ class TaskItem extends Component {
     }
 
     report = async () => {
-        this.setState({ loading: true, expand: false });
-        let { report } = this.state;
-        let { id } = this.props.task;
-        let res = await this.props.report(id, report);
-        if (res.code === 200) {
-            this.props.task.status = 3;
-            this.props.task.report = report;
-            this.props.task.endTime = new Date();
-            ToastAndroid.show('Báo cáo thành công!', ToastAndroid.SHORT);
+        if (this.props.task.project.status === 1) {
+            this.setState({ loading: true, expand: false });
+            let { report } = this.state;
+            let { id } = this.props.task;
+            let res = await this.props.report(id, report);
+            if (res.code === 200) {
+                this.props.task.status = 3;
+                this.props.task.report = report;
+                this.props.task.endTime = new Date();
+                ToastAndroid.show('Báo cáo thành công!', ToastAndroid.SHORT);
+            } else {
+                ToastAndroid.show('Có lỗi xảy ra!', ToastAndroid.SHORT);
+            }
+            this.setState({ loading: false });
         } else {
-            ToastAndroid.show('Có lỗi xảy ra!', ToastAndroid.SHORT);
+            ToastAndroid.show('Dự án đã kết thúc!', ToastAndroid.SHORT);
         }
-        this.setState({ loading: false });
     }
 
     render() {
@@ -134,12 +138,13 @@ class TaskItem extends Component {
                             placeholder="Báo cáo"
                             numberOfLines={3}
                             multiline={true}
+                            editable={task.project.status === 1}
                             onChangeText={report => this.setState({ report })}
                         />
                         <View style={{ paddingHorizontal: 50, paddingTop: 10 }}>
                             <Button
                                 title="Gửi"
-                                backgroundColor='#61d775'
+                                color={task.project.status === 1 ? '#61d775' : '#adadad'}
                                 onPress={this.report}
                                 style={{ width: 150 }}
                             />

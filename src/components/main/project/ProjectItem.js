@@ -42,7 +42,7 @@ class ProjectItem extends Component {
                         <Text style={{ fontSize: 18 }}>
                             {project.name}
                         </Text>
-                        <Link to={'/projectDetail/' + project._id}>
+                        <Link component={TouchableOpacity} to={'/projectDetail/' + project._id}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ marginRight: 3 }}>
                                     {formatDate(project.createdAt)}

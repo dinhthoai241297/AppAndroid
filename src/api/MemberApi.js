@@ -44,6 +44,17 @@ class MemberApi {
             body: JSON.stringify({ data })
         });
     }
+
+    static changeStatus(data) {
+        return fetch(`${HOST}member/changestatus`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data })
+        });
+    }
 }
 
 export default MemberApi;

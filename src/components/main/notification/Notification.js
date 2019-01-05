@@ -21,7 +21,9 @@ class Notification extends Component {
     }
 
     componentDidMount() {
-        this.getList();
+        setTimeout(() => {
+            this.getList();
+        }, 0);
     }
 
     getList = async () => {
@@ -52,6 +54,16 @@ class Notification extends Component {
         }
         this.setState({ loadMore: false });
     }
+
+    goDetail = type => {
+        console.log('GOOOOOOOOOO: ', type);
+        if (type === 1) {
+            this.props.goInvite();
+        } else {
+            this.props.goTask();
+        }
+    }
+
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
@@ -66,7 +78,9 @@ class Notification extends Component {
                 </View>
                 <FlatList
                     data={this.state.notifications}
-                    renderItem={({ item }) => <NotificationItem notification={item} />}
+                    renderItem={({ item }) => <NotificationItem
+                        goDetail={() => this.goDetail(item.notiType)} notification={item}
+                    />}
                     onEndReached={this.getListMore}
                     keyExtractor={(item, index) => index.toString()}
                     onEndReachedThreshold={0.1}
@@ -75,6 +89,13 @@ class Notification extends Component {
                     ListFooterComponent={
                         this.state.loadMore && <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
                             <ProgressBarAndroid />
+                        </View>
+                    }
+                    ListEmptyComponent={
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Text>
+                                Không có thông báo nào!
+                            </Text>
                         </View>
                     }
                 />

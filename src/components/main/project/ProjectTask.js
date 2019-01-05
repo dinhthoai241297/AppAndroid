@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, ProgressBarAndroid, TextInput, TouchableOpacity, Modal, Alert } from 'react-native';
+import { View, Text, FlatList, ProgressBarAndroid, TextInput, TouchableOpacity, Modal, ToastAndroid } from 'react-native';
 import Loading from '../../page/Loading';
 import TaskApi from '../../../api/TaskApi';
 import AddTask from './AddTask';
@@ -67,6 +67,14 @@ class ProjectTask extends Component {
         return res;
     }
 
+    openModal = () => {
+        if (this.props.project.status === 1) {
+            this.setState({ modalVisible: true });
+        } else {
+            ToastAndroid.show('Dự án đã dừng!', ToastAndroid.SHORT);
+        }
+    }
+
     render() {
 
         let { members, project, user } = this.props;
@@ -123,16 +131,23 @@ class ProjectTask extends Component {
                                     {user.id === project.owner.id && <View
                                         style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 10 }}
                                     >
-                                        <TouchableOpacity onPress={() => this.setState({ modalVisible: true })}>
+                                        <TouchableOpacity onPress={this.openModal}>
                                             <Icon
                                                 type='font-awesome' name='plus-circle'
-                                                color='#018fe5'
+                                                color={project.status === 1 ? '#018fe5' : '#adadad'}
                                                 size={40}
                                             />
                                         </TouchableOpacity>
                                     </View>
                                     }
                                 </View>
+                            </View>
+                        }
+                        ListEmptyComponent={
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <Text>
+                                    Không có công việc nào!
+                                </Text>
                             </View>
                         }
                     />

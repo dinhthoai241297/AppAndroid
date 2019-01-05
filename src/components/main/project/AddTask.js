@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Button, ScrollView, StyleSheet, DatePickerAndroid, Picker, ToastAndroid } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { formatDate } from '../../../custom/Func';
 
 class AddTask extends Component {
 
@@ -143,7 +144,7 @@ class AddTask extends Component {
                                         style={style.cusInput}
                                         editable={false}
                                         placeholder="Bắt đầu"
-                                        value={this.state.startTime ? this.state.startTime.toDateString() : ''}
+                                        value={this.state.startTime ? formatDate(this.state.startTime) : ''}
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -156,7 +157,7 @@ class AddTask extends Component {
                                         style={style.cusInput}
                                         editable={false}
                                         placeholder="Deadline"
-                                        value={this.state.deadLine ? this.state.deadLine.toDateString() : ''}
+                                        value={this.state.deadLine ? formatDate(this.state.deadLine) : ''}
                                     />
                                 </TouchableOpacity>
                             </View>

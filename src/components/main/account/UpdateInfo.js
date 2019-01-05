@@ -14,6 +14,11 @@ class UpdateInfo extends Component {
         }
     }
 
+    componentDidMount() {
+        let { fullName } = this.props.user;
+        this.setState({ fullName });
+    }
+
     update = () => {
         let { fullName } = this.state;
         if (fullName === '') {
@@ -92,6 +97,7 @@ class UpdateInfo extends Component {
                                     placeholder="Họ & Tên"
                                     onChangeText={fullName => this.setState({ fullName })}
                                     onTouchStart={() => this.setState({ mess: '' })}
+                                    value={this.state.fullName}
                                 />
                             </View>
                             <View style={{ marginBottom: 10 }}>

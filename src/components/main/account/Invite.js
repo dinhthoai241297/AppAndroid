@@ -102,6 +102,13 @@ class Invite extends Component {
                             <ProgressBarAndroid />
                         </View>
                     }
+                    ListEmptyComponent={
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Text>
+                                Không có lời mời mới!
+                            </Text>
+                        </View>
+                    }
                 />
             </View>
         );

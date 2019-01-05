@@ -16,14 +16,14 @@ class Project extends Component {
             key: '',
             page: 1,
             refreshing: false,
-            loadMore: false,
+            loadMore: true,
             projects: []
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.projects !== this.props.data.projects) {
-            this.setState({ projects: nextProps.data.projects });
+            this.setState({ projects: nextProps.data.projects, loadMore: false });
         }
     }
 
@@ -32,7 +32,9 @@ class Project extends Component {
         if (this.props.data.projects.length === 0) {
             this.loadListProject();
         } else {
-            this.setState({ projects: this.props.data.projects });
+            setTimeout(() => {
+                this.setState({ projects: this.props.data.projects, loadMore: false });
+            }, 0);
         }
     }
 
@@ -68,10 +70,12 @@ class Project extends Component {
 
     render() {
 
+        let { projects } = this.state;
+
         return (
             <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
                 <FlatList
-                    data={this.state.projects}
+                    data={projects}
                     renderItem={({ item }) => <ProjectItem project={item} />}
                     keyExtractor={(item, index) => index.toString()}
                     onEndReached={this.loadMoreListApi}
@@ -131,7 +135,7 @@ class Project extends Component {
                                     flex: 1, paddingTop: 0, paddingBottom: 8, paddingLeft: 4, paddingRight: 8,
                                 }}>
                                     <Picker
-                                        prompt='Trạng thái dự án'
+                                        mode='dropdown'
                                         selectedValue={this.state.status}
                                         style={{ height: 40, flex: 1, backgroundColor: '#f4f4f4', borderRadius: 50 }}
                                         onValueChange={(itemValue, itemIndex) => this.handleChangeStatus(itemValue)}>

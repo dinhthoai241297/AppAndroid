@@ -44,6 +44,20 @@ class ProjectDetail extends Component {
         this.setState({ selectedTab });
     }
 
+    stopProject = async () => {
+        let { id } = this.state.project;
+        let rs = await ProjectApi.stop({ id });
+        let res = await rs.json();
+        if (res.code === 200) {
+            let { project } = this.state;
+            project.status = 3;
+            this.setState({ project });
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     render() {
         let { members, project } = this.state;
         let { id } = this.props.user;
@@ -118,7 +132,10 @@ class ProjectDetail extends Component {
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
                         onPress={() => this.changeTab('setting')}>
-                        {<ProjectManage loadProject={this.loadProject} project={this.state.project} />}
+                        {<ProjectManage
+                            stopProject={this.stopProject} loadProject={this.loadProject}
+                            project={this.state.project} user={this.props.user}
+                        />}
                     </TabNavigator.Item>}
                 </TabNavigator>
             </View>

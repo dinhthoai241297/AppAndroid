@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Button, ProgressBarAndroid, ScrollView, ToastAndroid, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import UpdateProject from './UpdateProject';
 
@@ -8,7 +8,8 @@ class ProjectManage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            stopping: false
         }
     }
 
@@ -17,13 +18,36 @@ class ProjectManage extends Component {
         this.props.loadProject();
     }
 
+    stopProject = async () => {
+        if (this.props.project.status === 1) {
+            Alert.alert(
+                'Xác nhận',
+                'Bạn có chắc rằng muốn kết thúc dự án!',
+                [
+                    { text: 'Hủy', onPress: () => { }, style: 'cancel' },
+                    {
+                        text: 'Đồng ý', onPress: async () => {
+                            this.setState({ stopping: true });
+                            let res = await this.props.stopProject();
+                            if (res) {
+                                ToastAndroid.show('Dự án kết thúc!', ToastAndroid.SHORT);
+                            } else {
+                                ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại!', ToastAndroid.SHORT);
+                            }
+                            this.setState({ stopping: false });
+                        }
+                    }
+                ]
+            );
+        }
+    }
+
     render() {
 
-        let { project } = this.props;
+        let { project, user } = this.props;
 
         return (
-            <View style={{ flex: 1, backgroundColor: '#dce1e7' }}>
-
+            <ScrollView style={{ flex: 1, backgroundColor: '#dce1e7' }}>
                 {/* Modal */}
                 <Modal
                     animationType="slide"
@@ -59,7 +83,24 @@ class ProjectManage extends Component {
                         />
                     </View>
                 </TouchableOpacity>
-            </View>
+                {(() => {
+                    if (project.owner.id === user.id) {
+                        return (
+                            <View style={{
+                                paddingVertical: 10, paddingHorizontal: 30,
+                                justifyContent: 'center', alignItems: 'center'
+                            }}>
+                                {this.state.stopping ? <ProgressBarAndroid /> : <Button
+                                    onPress={this.stopProject}
+                                    title={project.status === 1 ? 'Kết thúc dự án' : 'Đã kết thúc'}
+                                    color={project.status === 1 ? '#018fe5' : '#adadad'}
+                                    accessibilityLabel="Learn more about this purple button"
+                                />}
+                            </View>
+                        );
+                    }
+                })()}
+            </ScrollView>
         );
     }
 }

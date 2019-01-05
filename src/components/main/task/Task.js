@@ -22,7 +22,9 @@ class Task extends Component {
     }
 
     componentDidMount() {
-        this.getList();
+        setTimeout(() => {
+            this.getList();
+        }, 0);
     }
 
     getList = async () => {
@@ -103,6 +105,13 @@ class Task extends Component {
                                         onSubmitEditing={this.getList}
                                     />
                                 </View>
+                            </View>
+                        }
+                        ListEmptyComponent={
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <Text>
+                                    Không có công việc nào!
+                                </Text>
                             </View>
                         }
                     />

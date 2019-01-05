@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-native';
 import { Icon } from 'react-native-elements';
 import ProjectApi from '../../../api/ProjectApi';
+import { formatDate } from '../../../custom/Func';
 
 class AddProject extends Component {
 
@@ -124,7 +125,7 @@ class AddProject extends Component {
                                         style={style.cusInput}
                                         editable={false}
                                         placeholder="Hoàn thành"
-                                        value={this.state.endTime ? this.state.endTime.toDateString() : ''}
+                                        value={this.state.endTime ? formatDate(this.state.endTime) : ''}
                                     />
                                 </TouchableOpacity>
                             </View>

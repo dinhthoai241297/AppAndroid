@@ -26,6 +26,14 @@ class Main extends Component {
         this.setState({ selectedTab });
     }
 
+    goTask = () => {
+        this.setState({ selectedTab: 'task' });
+    }
+
+    goInvite = () => {
+        this.props.history.push('/invite');
+    }
+
     render() {
 
         let { user } = this.props;
@@ -64,7 +72,7 @@ class Main extends Component {
                         titleStyle={styles.navItem}
                         selectedTitleStyle={styles.navItemSelected}
                         onPress={() => this.changeTab('notification')}>
-                        {<Notification />}
+                        {<Notification goTask={this.goTask} goInvite={this.goInvite} />}
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'account'}

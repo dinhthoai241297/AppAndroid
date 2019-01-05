@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Button, Modal, Alert, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Button, Modal, Alert, RefreshControl, ToastAndroid } from 'react-native';
 import { Icon } from 'react-native-elements';
 import AddUser from './AddUser';
 import Loading from '../../page/Loading';
@@ -22,13 +22,25 @@ class ProjectDes extends Component {
         let { members } = this.props;
         let rs = null;
         if (members) {
-            rs = members.map((mem, index) => <MemberItem key={index} member={mem} />);
+            rs = members.map((mem, index) => <MemberItem
+                key={index} member={mem}
+                project={this.props.project}
+                user={this.props.user}
+            />);
         }
         return rs;
     }
 
     closeModal = () => {
         this.setState({ modalVisible: false }, this.props.loadProject);
+    }
+
+    openModal = () => {
+        if (this.props.project.status === 1) {
+            this.setState({ modalVisible: true });
+        } else {
+            ToastAndroid.show('Dự án đã dừng!', ToastAndroid.SHORT);
+        }
     }
 
     loadProject = async () => {
@@ -118,9 +130,9 @@ class ProjectDes extends Component {
                             paddingHorizontal: 40, paddingVertical: 10, backgroundColor: 'white'
                         }}>
                             <Button
-                                onPress={() => this.setState({ modalVisible: true })}
+                                onPress={this.openModal}
                                 title="Thêm thành viên"
-                                color="#018fe5"
+                                color={project.status === 1 ? '#018fe5' : '#adadad'}
                                 accessibilityLabel="Learn more about this purple button"
                             />
                         </View>}
